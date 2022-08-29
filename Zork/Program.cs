@@ -8,11 +8,12 @@ namespace Zork
         {
             Console.WriteLine("Welcome to Zork!");
 
-            string inputString = Console.ReadLine().Trim().ToUpper();
+            string inputString = Console.ReadLine().Trim();
 
             Console.WriteLine(inputString);
+            Commands command = ToCommand(inputString);
 
-            if(inputString == "QUIT")
+            if(command == Commands.Quit)
             {
                 Console.WriteLine("Thank you for playing.");
             }
@@ -24,6 +25,23 @@ namespace Zork
             {
                 Console.WriteLine($"Unknown Command: {inputString}");
             }
+        }
+
+        static Commands ToCommand(string commandString)
+        {
+            if(Enum.TryParse<Commands>(commandString, true, out Commands command))
+            {
+                return command;
+            }
+            else
+            {
+                return Commands.Unknown;
+            }
+        }
+
+        static bool IsEven(int value)
+        {
+            return value % 2 == 0 ? true : false;
         }
     }
 }
