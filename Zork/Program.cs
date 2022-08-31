@@ -29,14 +29,7 @@ namespace Zork
 
         static Commands ToCommand(string commandString)
         {
-            if(Enum.TryParse<Commands>(commandString, true, out Commands command))
-            {
-                return command;
-            }
-            else
-            {
-                return Commands.Unknown;
-            }
+            return Enum.TryParse<Commands>(commandString, true, out Commands command) ? command : Commands.Unknown;
         }
 
         static bool IsEven(int value)
