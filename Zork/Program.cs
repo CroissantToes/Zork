@@ -12,19 +12,7 @@ namespace Zork
 
             Console.WriteLine(inputString);
             Commands command = ToCommand(inputString);
-
-            if(command == Commands.Quit)
-            {
-                Console.WriteLine("Thank you for playing.");
-            }
-            else if (inputString == "LOOK")
-            {
-                Console.WriteLine("This is an open field west of a white house with a boarded front door.\n A rubber mat saying 'Welcome to Zork!' lies by the front door.");
-            }
-            else
-            {
-                Console.WriteLine($"Unknown Command: {inputString}");
-            }
+            Console.WriteLine(command);
         }
 
         static Commands ToCommand(string commandString)
