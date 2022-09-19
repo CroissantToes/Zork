@@ -11,7 +11,7 @@
             Name = name;
         }
 
-        public Room(string name, string description)
+        public Room(string name, string description = null)
         {
             Name = name;
         }
