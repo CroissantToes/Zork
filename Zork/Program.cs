@@ -68,7 +68,7 @@ namespace Zork
 
             switch (command)
             {
-                case Commands.North when _location.row < _rooms.GetLength(0):
+                case Commands.North when _location.row < _rooms.GetLength(0) - 1:
                     _location.row++;
                     didMove = true;
                     break;

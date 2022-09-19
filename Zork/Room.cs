@@ -11,6 +11,11 @@
             Name = name;
         }
 
+        public Room(string name, string description)
+        {
+            Name = name;
+        }
+
         public override string ToString()
         {
             return Name;
