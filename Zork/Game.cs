@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Zork
 {
@@ -12,7 +13,9 @@ namespace Zork
 
         public void Run()
         {
-            InitializeRoomDescriptions();
+            string roomsFileName = @"Content\Rooms.txt";
+
+            InitializeRoomDescriptions(roomsFileName);
 
             Room previousRoom = null;
 
@@ -64,7 +67,7 @@ namespace Zork
             }
         }
 
-        private void InitializeRoomDescriptions()
+        private void InitializeRoomDescriptions(string roomsFileName)
         {
             var roomMap = new Dictionary<string, Room>();
 
@@ -73,22 +76,34 @@ namespace Zork
                 roomMap.Add(room.Name, room);
             }
 
-            roomMap["Rocky Trail"].Description = "You are on a rock-strewn trail.";
-            roomMap["South of House"].Description = "You are facing the south side of a white house. There is no door here, and all thw windows are barred.";
-            roomMap["Canyon View"].Description = "You are at the top of the Great Canyon on its south wall.";
+            string[] lines = File.ReadAllLines(roomsFileName);
+            foreach (string line in lines)
+            {
+                const string fieldDelimiter = "##";
+                const int expectedFieldCount = 2;
 
-            roomMap["Forest"].Description = "This is a forest, with trees in all directions around you.";
-            roomMap["West of House"].Description = "This is an open field west of a white house, with a boarded front door.";
-            roomMap["Behind House"].Description = "You are behind the white house. In one corner of the house, there is a small window which is slightly ajar.";
+                string[] fields = line.Split(fieldDelimiter);
+                if(fields.Length != expectedFieldCount)
+                {
+                    throw new InvalidDataException("Invalid record.");
+                }
 
-            roomMap["Dense Woods"].Description = "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight.";
-            roomMap["North of House"].Description = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";
-            roomMap["Clearing"].Description = "You are in a clearing, with a forest surrounding you on the west and south.";
+                string name = fields[(int)Fields.Name];
+                string description = fields[(int)Fields.Description];
+
+                roomMap[name].Description = description;
+            }
         }
 
         private static Commands ToCommand(string commandString)
         {
             return Enum.TryParse<Commands>(commandString, true, out Commands command) ? command : Commands.Unknown;
+        }
+
+        private enum Fields
+        {
+            Name = 0,
+            Description
         }
     }
 }
