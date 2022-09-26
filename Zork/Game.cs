@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Zork
 {
@@ -69,31 +70,10 @@ namespace Zork
 
         private void InitializeRoomDescriptions(string roomsFileName)
         {
-            var roomMap = new Dictionary<string, Room>();
-
-            foreach (Room room in World.Rooms)
-            {
-                roomMap.Add(room.Name, room);
-            }
-
-            string[] lines = File.ReadAllLines(roomsFileName);
-            foreach (string line in lines)
-            {
-                const string fieldDelimiter = "##";
-                const int expectedFieldCount = 2;
-
-                string[] fields = line.Split(fieldDelimiter);
-                if(fields.Length != expectedFieldCount)
-                {
-                    throw new InvalidDataException("Invalid record.");
-                }
-
-                string name = fields[(int)Fields.Name];
-                string description = fields[(int)Fields.Description];
-
-                roomMap[name].Description = description;
-            }
+            _rooms = JsonConvert.DeserializeObject<Room[,]>(File.ReadAllText(roomsFileName));
         }
+
+        private static Room[,] _rooms;
 
         private static Commands ToCommand(string commandString)
         {
