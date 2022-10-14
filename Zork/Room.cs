@@ -1,4 +1,6 @@
-﻿namespace Zork
+﻿using Newtonsoft.Json;
+
+namespace Zork
 {
     internal class Room
     {
@@ -12,6 +14,8 @@
         {
             Name = name;
         }
+
+        [JsonConstructor]
         public Room(string name, string description = null)
         {
             Name = name;
