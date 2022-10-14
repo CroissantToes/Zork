@@ -1,8 +1,8 @@
 {
   "profiles": {
     "Zork": {
-      "commandName": "Project",
-      "commandLineArgs": "Content/Rooms.json"
+      "commandName": "Project"
+      
     }
   }
 }
