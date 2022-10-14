@@ -12,13 +12,10 @@
         {
             Name = name;
         }
-
         public Room(string name, string description = null)
         {
             Name = name;
-            Description = description;
         }
-
         public override string ToString()
         {
             return Name;
