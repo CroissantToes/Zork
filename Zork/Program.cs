@@ -17,7 +17,7 @@ namespace Zork
 
         static void Main(string[] args)
         {
-            const string defaultRoomsFileName = @"Content/Rooms.txt";
+            const string defaultRoomsFileName = @"Content/Rooms.json";
 
             string roomsFileName = (args.Length > 0 ? args[(int)CommandLineArguments.RoomsFileName] : defaultRoomsFileName);
 
