@@ -10,9 +10,9 @@ namespace Zork
             set => _currentRoom = value;
         }
 
-        public int Score { get; }
+        public int Score { get; set; }
 
-        public int Moves { get; }
+        public int Moves { get; set; }
 
         public Player(World world, string startingLocation)
         {

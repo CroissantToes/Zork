@@ -8,6 +8,8 @@
         North,
         South,
         East,
-        West
+        West,
+        Score,
+        Reward
     }
 }

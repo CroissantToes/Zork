@@ -62,10 +62,20 @@ namespace Zork
                             outputString = "The way is shut!";
                         }
                         break;
+                    case Commands.Score:
+                        outputString = $"Your score would be {Player.Score}, in {Player.Moves} move(s).";
+                        break;
+                    case Commands.Reward:
+                        Player.Score++;
+                        outputString = $"Your score has increased! Your new score is {Player.Score}.";
+                        break;
                     default:
                         outputString = "Unknown command.";
+                        Player.Moves--;
                         break;
                 }
+
+                Player.Moves++;
 
                 Console.WriteLine(outputString);
             }
