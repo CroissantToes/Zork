@@ -5,8 +5,10 @@ namespace Zork
 {
     public class Room
     {
+        [JsonProperty(Order = 1)]
         public string Name { get; set; }
 
+        [JsonProperty(Order = 2)]
         public string Description { get; set; }
 
         public bool HasBeenVisited { get; set; }
@@ -14,7 +16,7 @@ namespace Zork
         [JsonIgnore]
         public Dictionary<Directions, Room> Neighbors { get; private set; }
 
-        [JsonProperty]
+        [JsonProperty(PropertyName = "Neighbors", Order = 3)]
         private Dictionary<Directions, string> NeighborNames { get; set; }
 
         public Room(string name)
