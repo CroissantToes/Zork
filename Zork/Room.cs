@@ -19,17 +19,19 @@ namespace Zork
         [JsonProperty(PropertyName = "Neighbors", Order = 3)]
         private Dictionary<Directions, string> NeighborNames { get; set; }
 
-        public Room(string name)
-        {
-            Name = name;
-        }
+        [JsonIgnore]
+        public List<Item> Inventory { get; private set; }
+
+        [JsonProperty(PropertyName = "Inventory")]
+        private string[] InventoryNames { get; }
 
         [JsonConstructor]
-        public Room(string name, string description, Dictionary<Directions, string> neighborNames)
+        public Room(string name, string description, Dictionary<Directions, string> neighborNames, string[] inventoryNames)
         {
             Name = name;
             Description = description;
             NeighborNames = neighborNames ?? new Dictionary<Directions, string>();
+            InventoryNames = inventoryNames ?? new string[0];
         }
 
         public void UpdateNeighbors(World world)
@@ -41,6 +43,15 @@ namespace Zork
             }
 
             NeighborNames = null;
+        }
+
+        public void UpdateInventory(World world)
+        {
+            Inventory = new List<Item>();
+            foreach(var inventoryName in InventoryNames)
+            {
+                Inventory.Add(world.ItemsByName[inventoryName]);
+            }
         }
 
         public override string ToString()

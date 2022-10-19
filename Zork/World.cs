@@ -1,26 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Zork
 {
     public class World
     {
-        public Room[] Rooms
-        {
-            get;
+        public Room[] Rooms { get; }
 
-            set;
-        }
+        public Item[] Items { get; }
 
+        [JsonIgnore]
         public Dictionary<string, Room> RoomsByName { get; }
 
-        public World(Room[] rooms)
+        [JsonIgnore]
+        public Dictionary<string, Item> ItemsByName { get; }
+
+        public World(Room[] rooms, Item[] items)
         {
             Rooms = rooms;
             RoomsByName = new Dictionary<string, Room>();
             foreach (Room room in rooms)
             {
                 RoomsByName.Add(room.Name, room);
+            }
+            Items = items;
+            ItemsByName = new Dictionary<string, Item>();
+            foreach (Item item in items)
+            {
+                ItemsByName.Add(item.Name, item);
             }
         }
 
@@ -30,6 +38,7 @@ namespace Zork
             foreach (Room room in Rooms)
             {
                 room.UpdateNeighbors(this);
+                room.UpdateInventory(this);
             }
         }
     }
