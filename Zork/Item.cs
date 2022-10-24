@@ -9,6 +9,8 @@ namespace Zork
         public string Name { get; set; }
         private string Description { get; }
 
+        private string[] Aliases;
+
         public Item(string name, string description)
         {
             Name = name;

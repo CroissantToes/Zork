@@ -4,6 +4,9 @@
 		"Items": [
 					{
 						"Name": "Welcome Mat",
+						"Aliases": [
+							"Mat"
+						],
 						"Description": "A rubber mat with the words 'Welcome to Zork!' written on it."
 					},
 					{

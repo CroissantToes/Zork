@@ -16,6 +16,8 @@ namespace Zork
         [JsonIgnore]
         public Dictionary<string, Item> ItemsByName { get; }
 
+        public List<Item> Inventory { get; }
+
         public World(Room[] rooms, Item[] items)
         {
             Rooms = rooms;
