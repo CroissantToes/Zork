@@ -10,7 +10,11 @@ namespace Zork.Common
 
         public Player Player { get; }
 
+        public IInputService Input { get; private set; }
+
         public IOutputService Output { get; private set; }
+
+        private bool IsRunning { get; set; }
 
         public Game(World world, string startingLocation)
         {
@@ -18,16 +22,75 @@ namespace Zork.Common
             Player = new Player(world, startingLocation);
         }
 
-        public void Run(string[] args, IOutputService output)
+        public void Run(string[] args, IOutputService output, IInputService input)
         {
-            Output = output;
+            Input = input ?? throw new ArgumentNullException(nameof(input));
+            Output = output ?? throw new ArgumentNullException(nameof(output));
 
+            Input.InputReceived += MakeMove;
+
+            IsRunning = true;
+
+            Output.WriteLine(Player.currentRoom);
+            Output.WriteLine($"{Player.currentRoom.Description}\n");
+            Player.currentRoom.HasBeenVisited = true;
+            Output.Write("> ");
+
+            while (IsRunning)
+            {
+                Input.ProcessInput();
+            }
+        }
+
+        private void MakeMove(object sender, string input)
+        {
             Room previousRoom = null;
 
-            bool isRunning = true;
+            Commands command = ToCommand(input);
 
-            while (isRunning)
+            string outputString;
+            switch (command)
             {
+                case Commands.Quit:
+                    outputString = "Thank you for playing!";
+                    IsRunning = false;
+                    break;
+                case Commands.Look:
+                    outputString = Player.currentRoom.Description;
+                    break;
+                case Commands.North:
+                case Commands.South:
+                case Commands.East:
+                case Commands.West:
+                    Directions direction = (Directions)command;
+                    if (Player.Move(direction) == true)
+                    {
+                        outputString = $"You moved {command}.";
+                    }
+                    else
+                    {
+                        outputString = "The way is shut!";
+                    }
+                    break;
+                case Commands.Score:
+                    outputString = $"Your score would be {Player.Score}, in {Player.Moves} move(s).";
+                    break;
+                case Commands.Reward:
+                    Player.Score++;
+                    outputString = $"Your score has increased! Your new score is {Player.Score}.";
+                    break;
+                default:
+                    outputString = "Unknown command.";
+                    Player.Moves--;
+                    break;
+            }
+
+            Output.WriteLine(outputString);
+
+            if (command != Commands.Quit)
+            {
+                Player.Moves++;
+                
                 Output.WriteLine(Player.currentRoom);
 
                 if (previousRoom != Player.currentRoom && !Player.currentRoom.HasBeenVisited)
@@ -36,52 +99,8 @@ namespace Zork.Common
                     previousRoom = Player.currentRoom;
                     Player.currentRoom.HasBeenVisited = true;
                 }
-
+                Output.WriteLine(" ");
                 Output.Write("> ");
-
-                string inputString = Output.ReadLine().Trim();
-                Commands command = ToCommand(inputString);
-
-                string outputString;
-                switch (command)
-                {
-                    case Commands.Quit:
-                        outputString = "Thank you for playing!";
-                        isRunning = false;
-                        break;
-                    case Commands.Look:
-                        outputString = Player.currentRoom.Description;
-                        break;
-                    case Commands.North:
-                    case Commands.South:
-                    case Commands.East:
-                    case Commands.West:
-                        Directions direction = (Directions)command;
-                        if (Player.Move(direction) == true)
-                        {
-                            outputString = $"You moved {command}.";
-                        }
-                        else
-                        {
-                            outputString = "The way is shut!";
-                        }
-                        break;
-                    case Commands.Score:
-                        outputString = $"Your score would be {Player.Score}, in {Player.Moves} move(s).";
-                        break;
-                    case Commands.Reward:
-                        Player.Score++;
-                        outputString = $"Your score has increased! Your new score is {Player.Score}.";
-                        break;
-                    default:
-                        outputString = "Unknown command.";
-                        Player.Moves--;
-                        break;
-                }
-
-                Player.Moves++;
-
-                Output.WriteLine(outputString);
             }
         }
 

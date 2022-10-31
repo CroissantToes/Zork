@@ -9,7 +9,5 @@
         void WriteLine(object obj);
 
         void WriteLine(string message);
-
-        string ReadLine();
     }
 }

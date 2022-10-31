@@ -24,11 +24,5 @@ namespace Zork.Cli
         {
             Console.WriteLine(message);
         }
-
-        public string ReadLine()
-        {
-            string input = Console.ReadLine();
-            return input;
-        }
     }
 }
