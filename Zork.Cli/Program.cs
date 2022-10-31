@@ -20,6 +20,11 @@ namespace Zork.Cli
             var output = new ConsoleOutputService();
 
             game.Run(args, output, input);
+
+            while (game.IsRunning)
+            {
+                input.ProcessInput();
+            }
         }
 
         private enum CommandLineArguments
