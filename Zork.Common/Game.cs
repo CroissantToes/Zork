@@ -14,7 +14,7 @@ namespace Zork.Common
 
         public IOutputService Output { get; private set; }
 
-        public bool IsRunning { get; private set; }
+        private bool IsRunning { get; set; }
 
         public Game(World world, string startingLocation)
         {
@@ -35,13 +35,18 @@ namespace Zork.Common
             Output.WriteLine($"{Player.currentRoom.Description}\n");
             Player.currentRoom.HasBeenVisited = true;
             Output.Write("> ");
+
+            while (IsRunning)
+            {
+                Input.ProcessInput();
+            }
         }
 
-        private void MakeMove(object sender, string inputString)
+        private void MakeMove(object sender, string input)
         {
             Room previousRoom = null;
 
-            Commands command = ToCommand(inputString);
+            Commands command = ToCommand(input);
 
             string outputString;
             switch (command)
