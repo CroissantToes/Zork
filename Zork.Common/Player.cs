@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Zork.Common
 {
@@ -46,9 +47,42 @@ namespace Zork.Common
             return false;
         }
 
-        private void Take()
+        public string Take(string itemToTake)
         {
+            string outcome;
 
+            if(currentRoom.Inventory.Exists(item => String.Compare(item.Name, itemToTake, ignoreCase: true) == 0))
+            {
+                var subject = currentRoom.Inventory.Find(item => String.Compare(item.Name, itemToTake, ignoreCase: true) == 0);
+                Inventory.Add(subject);
+                currentRoom.Inventory.Remove(subject);
+                outcome = "Taken.";
+            }
+            else
+            {
+                outcome = "You can't see any such thing.";
+            }
+
+            return outcome;
+        }
+
+        public string Drop(string itemToDrop)
+        {
+            string outcome;
+
+            if (Inventory.Exists(item => String.Compare(item.Name, itemToDrop, ignoreCase: true) == 0))
+            {
+                var subject = Inventory.Find(item => String.Compare(item.Name, itemToDrop, ignoreCase: true) == 0);
+                currentRoom.Inventory.Add(subject);
+                Inventory.Remove(subject);
+                outcome = "Dropped.";
+            }
+            else
+            {
+                outcome = "You don't have any such thing.";
+            }
+
+            return outcome;
         }
 
         private World _world;

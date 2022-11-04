@@ -10,6 +10,9 @@
         East,
         West,
         Score,
-        Reward
+        Reward,
+        Take,
+        Drop,
+        Inventory
     }
 }

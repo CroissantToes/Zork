@@ -14,7 +14,7 @@ namespace Zork.Common
 
         public IOutputService Output { get; private set; }
 
-        private bool IsRunning { get; set; }
+        public bool IsRunning { get; private set; }
 
         public Game(World world, string startingLocation)
         {
@@ -32,23 +32,23 @@ namespace Zork.Common
             IsRunning = true;
 
             Output.WriteLine(Player.currentRoom);
-            Output.WriteLine($"{Player.currentRoom.Description}\n");
-            Player.currentRoom.HasBeenVisited = true;
-            Output.Write("> ");
-
-            while (IsRunning)
+            Output.WriteLine($"{Player.currentRoom.Description}");
+            foreach (Item item in Player.currentRoom.Inventory)
             {
-                Input.ProcessInput();
+                Output.WriteLine($"{item.Description}");
             }
+            Player.currentRoom.HasBeenVisited = true;
+            Output.Write("\n> ");
         }
 
-        private void MakeMove(object sender, string input)
+        private void MakeMove(object sender, string inputString)
         {
             Room previousRoom = null;
 
-            Commands command = ToCommand(input);
-
+            var splitInput = inputString.Split(" ");
+            Commands command = ToCommand(splitInput[0]);
             string outputString;
+
             switch (command)
             {
                 case Commands.Quit:
@@ -57,6 +57,10 @@ namespace Zork.Common
                     break;
                 case Commands.Look:
                     outputString = Player.currentRoom.Description;
+                    foreach(Item item in Player.currentRoom.Inventory)
+                    {
+                        outputString += $"\n{item.Description}";
+                    }
                     break;
                 case Commands.North:
                 case Commands.South:
@@ -79,6 +83,29 @@ namespace Zork.Common
                     Player.Score++;
                     outputString = $"Your score has increased! Your new score is {Player.Score}.";
                     break;
+                case Commands.Take:
+                    if(splitInput.Length > 1)
+                    {
+                        outputString = Player.Take(splitInput[1]);
+                    }
+                    else
+                    {
+                        outputString = "This command requires a subject.";
+                    }
+                    break;
+                case Commands.Drop:
+                    if(splitInput.Length > 1)
+                    {
+                        outputString= Player.Drop(splitInput[1]);
+                    }
+                    else
+                    {
+                        outputString = "This command requires a subject.";
+                    }
+                    break;
+                case Commands.Inventory:
+                    outputString = PrintInventory();
+                    break;
                 default:
                     outputString = "Unknown command.";
                     Player.Moves--;
@@ -90,18 +117,45 @@ namespace Zork.Common
             if (command != Commands.Quit)
             {
                 Player.Moves++;
-                
-                Output.WriteLine(Player.currentRoom);
 
                 if (previousRoom != Player.currentRoom && !Player.currentRoom.HasBeenVisited)
                 {
-                    Output.WriteLine(Player.currentRoom.Description);
+                    Output.WriteLine($"{Player.currentRoom}\n{Player.currentRoom.Description}\n");
                     previousRoom = Player.currentRoom;
                     Player.currentRoom.HasBeenVisited = true;
                 }
-                Output.WriteLine(" ");
+                else
+                {
+                    Output.WriteLine($"\n{Player.currentRoom}");
+                }
                 Output.Write("> ");
             }
+        }
+
+        private string PrintInventory()
+        {
+            string output = "";
+
+            if(Player.Inventory.Count > 0)
+            {
+                foreach(Item item in Player.Inventory)
+                {
+                    if(Player.Inventory.IndexOf(item) < Player.Inventory.Count - 1)
+                    {
+                        output += $"{item.Description}\n";
+                    }
+                    else
+                    {
+                        output += $"{item.Description}";
+                    }
+                }
+            }
+            else
+            {
+                output = "You are empty handed.";
+            }
+
+            return output;
         }
 
         private static Commands ToCommand(string commandString)

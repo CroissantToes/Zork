@@ -3,15 +3,12 @@
 	"World": {
 		"Items": [
 					{
-						"Name": "Welcome Mat",
-						"Aliases": [
-							"Mat"
-						],
-						"Description": "A rubber mat with the words 'Welcome to Zork!' written on it."
+						"Name": "Mat",
+						"Description": "A rubber mat with the words 'Welcome to Zork!' written on it lies here."
 					},
 					{
 						"Name": "Mailbox",
-						"Description": "A small mailbox."
+						"Description": "There is a small mailbox here."
 					}
 		],
 		"Rooms": [
@@ -24,6 +21,8 @@
 					"West": "Forest 1"
 				},
 				"Inventory": [
+					"Mat",
+					"Mailbox"
 				]
 			},
 			{
