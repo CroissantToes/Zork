@@ -128,6 +128,7 @@ namespace Zork.Common
                 {
                     Output.WriteLine($"\n{Player.currentRoom}");
                 }
+
                 Output.Write("> ");
             }
         }
