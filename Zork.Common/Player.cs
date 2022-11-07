@@ -42,11 +42,6 @@ namespace Zork.Common
             return didMove;
         }
 
-        public bool AddItemToInventory(Item itemToAdd)
-        {
-            return false;
-        }
-
         public string Take(string itemToTake)
         {
             string outcome;

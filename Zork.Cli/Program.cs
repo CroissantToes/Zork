@@ -5,7 +5,7 @@ using Zork.Common;
 
 namespace Zork.Cli
 {
-    public class Program
+    internal class Program
     {  
         static void Main(string[] args)
         {

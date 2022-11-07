@@ -1,20 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Work\\Documents\\GitHub\\Zork\\Zork.Common\\Zork.Common.csproj": {}
+    "C:\\Users\\ch728843\\source\\repos\\Zork\\Zork.Common\\Zork.Common.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Work\\Documents\\GitHub\\Zork\\Zork.Common\\Zork.Common.csproj": {
+    "C:\\Users\\ch728843\\source\\repos\\Zork\\Zork.Common\\Zork.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Work\\Documents\\GitHub\\Zork\\Zork.Common\\Zork.Common.csproj",
+        "projectUniqueName": "C:\\Users\\ch728843\\source\\repos\\Zork\\Zork.Common\\Zork.Common.csproj",
         "projectName": "Zork.Common",
-        "projectPath": "C:\\Users\\Work\\Documents\\GitHub\\Zork\\Zork.Common\\Zork.Common.csproj",
-        "packagesPath": "C:\\Users\\Work\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Work\\Documents\\GitHub\\Zork\\Zork.Common\\obj\\",
+        "projectPath": "C:\\Users\\ch728843\\source\\repos\\Zork\\Zork.Common\\Zork.Common.csproj",
+        "packagesPath": "C:\\Users\\ch728843\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ch728843\\source\\repos\\Zork\\Zork.Common\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Work\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ch728843\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +27,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -61,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

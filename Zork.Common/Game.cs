@@ -43,7 +43,7 @@ namespace Zork.Common
 
         private void MakeMove(object sender, string inputString)
         {
-            Room previousRoom = null;
+            Room previousRoom = Player.currentRoom;
 
             var splitInput = inputString.Split(" ");
             Commands command = ToCommand(splitInput[0]);
