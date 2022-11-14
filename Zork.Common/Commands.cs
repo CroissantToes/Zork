@@ -1,18 +1,25 @@
 ﻿namespace Zork.Common
-{ 
+{
     public enum Commands
     {
-        Quit = 0,
+        Quit,
+        Q = Quit,
+        Exit = Quit,
+        Bye = Quit,
         Look,
-        Unknown,
+        L = Look,
         North,
+        N = North,
         South,
+        S = South,
         East,
+        E = East,
         West,
-        Score,
-        Reward,
+        W = West,
         Take,
         Drop,
-        Inventory
+        Inventory,
+        I = Inventory,
+        Unknown
     }
 }

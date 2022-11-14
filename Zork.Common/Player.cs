@@ -1,87 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Zork.Common
 {
     public class Player
     {
-        public Room currentRoom
+        public Room CurrentRoom
         {
             get => _currentRoom;
             set => _currentRoom = value;
         }
 
-        public List<Item> Inventory { get; }
-
-        public int Score { get; set; }
-
-        public int Moves { get; set; }
+        public IEnumerable<Item> Inventory => _inventory;
 
         public Player(World world, string startingLocation)
         {
             _world = world;
 
-            if(_world.RoomsByName.TryGetValue(startingLocation, out _currentRoom) == false)
+            if (_world.RoomsByName.TryGetValue(startingLocation, out _currentRoom) == false)
             {
                 throw new Exception($"Invalid starting location: {startingLocation}");
             }
 
-            Inventory = new List<Item>();
+            _inventory = new List<Item>();
         }
 
         public bool Move(Directions direction)
         {
             bool didMove = _currentRoom.Neighbors.TryGetValue(direction, out Room neighbor);
-
-            if(didMove)
+            if (didMove)
             {
-                currentRoom = neighbor;
+                CurrentRoom = neighbor;
             }
 
             return didMove;
         }
 
-        public string Take(string itemToTake)
+        public void AddItemToInventory(Item itemToAdd)
         {
-            string outcome;
-
-            if(currentRoom.Inventory.Exists(item => String.Compare(item.Name, itemToTake, ignoreCase: true) == 0))
+            if (_inventory.Contains(itemToAdd))
             {
-                var subject = currentRoom.Inventory.Find(item => String.Compare(item.Name, itemToTake, ignoreCase: true) == 0);
-                Inventory.Add(subject);
-                currentRoom.Inventory.Remove(subject);
-                outcome = "Taken.";
-            }
-            else
-            {
-                outcome = "You can't see any such thing.";
+                throw new Exception($"Item {itemToAdd} already exists in inventory.");
             }
 
-            return outcome;
+            _inventory.Add(itemToAdd);
         }
 
-        public string Drop(string itemToDrop)
+        public void RemoveItemFromInventory(Item itemToRemove)
         {
-            string outcome;
-
-            if (Inventory.Exists(item => String.Compare(item.Name, itemToDrop, ignoreCase: true) == 0))
+            if (_inventory.Remove(itemToRemove) == false)
             {
-                var subject = Inventory.Find(item => String.Compare(item.Name, itemToDrop, ignoreCase: true) == 0);
-                currentRoom.Inventory.Add(subject);
-                Inventory.Remove(subject);
-                outcome = "Dropped.";
+                throw new Exception("Could not remove item from inventory.");
             }
-            else
-            {
-                outcome = "You don't have any such thing.";
-            }
-
-            return outcome;
         }
 
-        private World _world;
-
+        private readonly World _world;
         private Room _currentRoom;
+        private readonly List<Item> _inventory;
     }
 }

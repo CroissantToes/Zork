@@ -1,45 +1,65 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Zork.Common
 {
     public class Room
     {
-        [JsonProperty(Order = 1)]
-        public string Name { get; set; }
+        public string Name { get; }
 
-        [JsonProperty(Order = 2)]
         public string Description { get; set; }
 
-        public bool HasBeenVisited { get; set; }
-
         [JsonIgnore]
-        public Dictionary<Directions, Room> Neighbors { get; private set; }
+        public IReadOnlyDictionary<Directions, Room> Neighbors => _neighbors;
 
-        [JsonProperty(PropertyName = "Neighbors", Order = 3)]
+        [JsonProperty]
         private Dictionary<Directions, string> NeighborNames { get; set; }
 
         [JsonIgnore]
-        public List<Item> Inventory { get; private set; }
+        public IEnumerable<Item> Inventory => _inventory;
 
-        [JsonProperty(PropertyName = "Inventory")]
-        private string[] InventoryNames { get; }
+        [JsonProperty]
+        private string[] InventoryNames { get; set; }
 
-        [JsonConstructor]
         public Room(string name, string description, Dictionary<Directions, string> neighborNames, string[] inventoryNames)
         {
             Name = name;
             Description = description;
             NeighborNames = neighborNames ?? new Dictionary<Directions, string>();
+            _neighbors = new Dictionary<Directions, Room>();
+
             InventoryNames = inventoryNames ?? new string[0];
+            _inventory = new List<Item>();
         }
 
-        public void UpdateNeighbors(World world)
+        public static bool operator ==(Room lhs, Room rhs)
         {
-            Neighbors = new Dictionary<Directions, Room>();
-            foreach(KeyValuePair<Directions, string> neighborName in NeighborNames)
+            if (ReferenceEquals(lhs, rhs))
             {
-                Neighbors.Add(neighborName.Key, world.RoomsByName[neighborName.Value]);
+                return true;
+            }
+
+            if (lhs is null || rhs is null)
+            {
+                return false;
+            }
+
+            return string.Compare(lhs.Name, rhs.Name, ignoreCase: true) == 0;
+        }
+
+        public static bool operator !=(Room lhs, Room rhs) => !(lhs == rhs);
+
+        public override bool Equals(object obj) => obj is Room other && other == this;
+
+        public override int GetHashCode() => Name.GetHashCode();
+
+        public void UpdateNeighbors(World world)
+        {            
+            foreach (var neighborName in NeighborNames)
+            {
+                _neighbors.Add(neighborName.Key, world.RoomsByName[neighborName.Value]);
             }
 
             NeighborNames = null;
@@ -47,16 +67,35 @@ namespace Zork.Common
 
         public void UpdateInventory(World world)
         {
-            Inventory = new List<Item>();
-            foreach(var inventoryName in InventoryNames)
+            foreach (var inventoryName in InventoryNames)
             {
-                Inventory.Add(world.ItemsByName[inventoryName]);
+                _inventory.Add(world.ItemsByName[inventoryName]);
+            }
+
+            InventoryNames = null;
+        }
+
+        public void AddItemToInventory(Item itemToAdd)
+        {
+            if (_inventory.Contains(itemToAdd))
+            {
+                throw new Exception($"Item {itemToAdd} already exists in inventory.");
+            }
+
+            _inventory.Add(itemToAdd);
+        }
+
+        public void RemoveItemFromInventory(Item itemToRemove)
+        {
+            if (_inventory.Remove(itemToRemove) == false)
+            {
+                throw new Exception("Could not remove item from inventory.");
             }
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
+
+        private readonly List<Item> _inventory;
+        private readonly Dictionary<Directions, Room> _neighbors;
     }
 }

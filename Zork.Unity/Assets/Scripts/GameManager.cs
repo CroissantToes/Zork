@@ -1,18 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
+using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
+using Zork.Common;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private UnityInputService Input;
+    [SerializeField] private UnityOutputService Output;
+    [SerializeField] private TextMeshProUGUI LocationText;
+    [SerializeField] private TextMeshProUGUI ScoreText;
+    [SerializeField] private TextMeshProUGUI MovesText;
+    [SerializeField] private TextMeshProUGUI InputField;
+
+    private void Awake()
     {
-        
+        TextAsset gameJson = Resources.Load<TextAsset>("GameJson");
+        _game = JsonConvert.DeserializeObject<Game>(gameJson.text);
+
+        _game.Run(Input, Output);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private Game _game;
 }
