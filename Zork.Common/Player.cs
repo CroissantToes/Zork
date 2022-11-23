@@ -6,6 +6,27 @@ namespace Zork.Common
     public class Player
     {
         public event EventHandler<Room> locationChanged;
+        public event EventHandler<int> scoreChanged;
+        public event EventHandler<int> movesChanged;
+
+        public int Score 
+        { 
+            get => _score; 
+            set
+            {
+                _score = value;
+                scoreChanged.Invoke(this, _score);
+            }
+        }
+        public int Moves
+        {
+            get => _moves;
+            set
+            {
+                _moves = value;
+                movesChanged.Invoke(this, _moves);
+            }
+        }
 
         public Room CurrentRoom
         {
@@ -65,6 +86,8 @@ namespace Zork.Common
 
         private readonly World _world;
         private Room _currentRoom;
+        private int _score;
+        private int _moves;
         private readonly List<Item> _inventory;
     }
 }

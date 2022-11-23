@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using Zork.Common;
 
@@ -18,6 +17,8 @@ public class GameManager : MonoBehaviour
         _game = JsonConvert.DeserializeObject<Game>(gameJson.text);
         _game.Run(InputService, OutputService);
         _game.Player.locationChanged += SetLocationText;
+        _game.Player.scoreChanged += SetScoreText;
+        _game.Player.movesChanged += SetMovesText;
     }
 
     private void Start()
@@ -36,13 +37,24 @@ public class GameManager : MonoBehaviour
 
         if(_game.IsRunning == false)
         {
-            UnityEditor.EditorApplication.isPlaying = false;
+            //UnityEditor.EditorApplication.isPlaying = false;
+            Application.Quit();
         }
     }
 
     private void SetLocationText(object sender, Room location)
     {
         LocationText.text = location.Name;
+    }
+
+    private void SetScoreText(object sender, int score)
+    {
+        ScoreText.text = $"Score: {score}";
+    }
+
+    private void SetMovesText(object sender, int moves)
+    {
+        MovesText.text = $"Moves: {moves}";
     }
 
     private Game _game;

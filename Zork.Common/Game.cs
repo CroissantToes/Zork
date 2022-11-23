@@ -70,6 +70,7 @@ namespace Zork.Common
 
                 case Commands.Look:
                     Look();
+                    Player.Moves++;
                     break;
 
                 case Commands.North:
@@ -78,6 +79,18 @@ namespace Zork.Common
                 case Commands.West:
                     Directions direction = (Directions)command;
                     Output.WriteLine(Player.Move(direction) ? $"You moved {direction}." : "The way is shut!");
+                    Player.Moves++;
+                    break;
+
+                case Commands.Score:
+                    Output.WriteLine($"Your score would be {Player.Score}, in {Player.Moves + 1} move(s).");
+                    Player.Moves++;
+                    break;
+
+                case Commands.Reward:
+                    Player.Score++;
+                    Output.WriteLine($"Your score has increased! Your new score is {Player.Score}.");
+                    Player.Moves++;
                     break;
 
                 case Commands.Take:
@@ -89,6 +102,7 @@ namespace Zork.Common
                     {
                         Take(subject);
                     }
+                    Player.Moves++;
                     break;
 
                 case Commands.Drop:
@@ -100,27 +114,31 @@ namespace Zork.Common
                     {
                         Drop(subject);
                     }
+                    Player.Moves++;
                     break;
 
                 case Commands.Inventory:
                     if (Player.Inventory.Count() == 0)
                     {
-                        Console.WriteLine("You are empty handed.");
+                        Output.WriteLine("You are empty handed.");
                     }
                     else
                     {
-                        Console.WriteLine("You are carrying:");
+                        Output.WriteLine("You are carrying:");
                         foreach (Item item in Player.Inventory)
                         {
                             Output.WriteLine(item.InventoryDescription);
                         }
                     }
+                    Player.Moves++;
                     break;
 
                 default:
                     Output.WriteLine("Unknown command.");
                     break;
             }
+
+            
 
             if (ReferenceEquals(previousRoom, Player.CurrentRoom) == false)
             {
@@ -129,7 +147,7 @@ namespace Zork.Common
 
             Output.WriteLine($"\n{Player.CurrentRoom}");
         }
-        
+
         private void Look()
         {
             Output.WriteLine(Player.CurrentRoom.Description);
@@ -144,13 +162,13 @@ namespace Zork.Common
             Item itemToTake = Player.CurrentRoom.Inventory.FirstOrDefault(item => string.Compare(item.Name, itemName, ignoreCase: true) == 0);
             if (itemToTake == null)
             {
-                Console.WriteLine("You can't see any such thing.");                
+                Output.WriteLine("You can't see any such thing.");                
             }
             else
             {
                 Player.AddItemToInventory(itemToTake);
                 Player.CurrentRoom.RemoveItemFromInventory(itemToTake);
-                Console.WriteLine("Taken.");
+                Output.WriteLine("Taken.");
             }
         }
 
@@ -159,13 +177,13 @@ namespace Zork.Common
             Item itemToDrop = Player.Inventory.FirstOrDefault(item => string.Compare(item.Name, itemName, ignoreCase: true) == 0);
             if (itemToDrop == null)
             {
-                Console.WriteLine("You can't see any such thing.");                
+                Output.WriteLine("You can't see any such thing.");                
             }
             else
             {
                 Player.CurrentRoom.AddItemToInventory(itemToDrop);
                 Player.RemoveItemFromInventory(itemToDrop);
-                Console.WriteLine("Dropped.");
+                Output.WriteLine("Dropped.");
             }
         }
 

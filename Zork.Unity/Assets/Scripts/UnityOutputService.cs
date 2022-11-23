@@ -12,6 +12,8 @@ public class UnityOutputService : MonoBehaviour, IOutputService
 
     [SerializeField] private Transform ContentTransform;
 
+    [SerializeField] private int MaxLines = 20;
+
     public void Write(object obj)
     {
         ParseAndWriteLine(obj.ToString());
@@ -34,10 +36,28 @@ public class UnityOutputService : MonoBehaviour, IOutputService
 
     private void ParseAndWriteLine(string message)
     {
-        var textLine = Instantiate(TextLinePrefab, ContentTransform);
-        textLine.text = message;
-        _entries.Add(textLine.gameObject);
+        string[] lines = message.Split("\n");
+
+        foreach(string line in lines) 
+        {
+            if(line == "")
+            {
+                var textLine = Instantiate(NewLinePrefab, ContentTransform);
+                _entries.Enqueue(textLine.gameObject);
+            }
+            else
+            {
+                var textLine = Instantiate(TextLinePrefab, ContentTransform);
+                textLine.text = line;
+                _entries.Enqueue(textLine.gameObject);
+            }
+             
+            if(_entries.Count > MaxLines)
+            {
+                Destroy(_entries.Dequeue());
+            }
+        }
     }
 
-    private List<GameObject> _entries = new List<GameObject>();
+    private Queue<GameObject> _entries = new Queue<GameObject>();
 }
