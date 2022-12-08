@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 using Zork.Common;
 
@@ -8,6 +10,8 @@ namespace Zork.Cli
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
+
             const string defaultGameFilename = @"Content\Game.json";
             string gameFilename = (args.Length > 0 ? args[(int)CommandLineArguments.GameFilename] : defaultGameFilename);
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(gameFilename));

@@ -4,8 +4,8 @@
     "Items": [
       {
         "Name": "Mat",
-        "LookDescription": "A rubber mat saying 'Welcome to Zork!' lies here.",
-        "InventoryDescription": "A welcome mat."
+        "LookDescription": "A rubber mat saying 'Check the readme file for a list of new commands!' lies here.",
+        "InventoryDescription": "A welcome mat. It reminds you to check the readme file to see a list of new commands."
       },
       {
         "Name": "Mailbox",
@@ -16,9 +16,21 @@
         "Name": "Leaves",
         "LookDescription": "There is a pile of leaves here.",
         "InventoryDescription": "A pile of leaves."
+      },
+      {
+        "Name": "Flyer",
+        "LookDescription": "There is a flyer here. It reads: 'Domino's Pizza grand opening! Located east of the clearing.'",
+        "InventoryDescription": "A flyer that reads: 'Domino's Pizza grand opening! Located east of the clearing.'"
       }
     ],
     "Rooms": [
+      {
+        "Name": "Domino's Pizza",
+        "Description": "You have entered an eatery from the future. A dwarf stands behind the counter (presumably on a stool) ready to take your order.",
+        "NeighborNames": {
+          "West":  "Clearing"
+        }
+      },
       {
         "Name": "West of House",
         "Description": "This is an open field west of a white house, with a boarded front door.",
@@ -29,7 +41,8 @@
         },
         "InventoryNames": [
           "Mat",
-          "Mailbox"
+          "Mailbox",
+          "Flyer"
         ]
       },
       {
@@ -85,10 +98,11 @@
       },
       {
         "Name": "Clearing",
-        "Description": "You are in a clearing, with a forest surrounding you on the west and south.",
+        "Description": "You are in a clearing, with a forest surrounding you on the west and south. A 'Domino's Pizza' restaurant stands to the east.",
         "NeighborNames": {
           "West": "Forest 2",
-          "South": "Forest 3"
+          "South": "Forest 3",
+          "East":  "Domino's Pizza"
         },
         "IventoryNames": [
           "Leaves"

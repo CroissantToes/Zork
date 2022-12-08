@@ -5,9 +5,9 @@ namespace Zork.Common
 {
     public class Player
     {
-        public event EventHandler<Room> locationChanged;
-        public event EventHandler<int> scoreChanged;
-        public event EventHandler<int> movesChanged;
+        //public event EventHandler<Room> locationChanged;
+        //public event EventHandler<int> scoreChanged;
+        //public event EventHandler<int> movesChanged;
 
         public int Score 
         { 
@@ -15,7 +15,7 @@ namespace Zork.Common
             set
             {
                 _score = value;
-                scoreChanged.Invoke(this, _score);
+                //scoreChanged.Invoke(this, _score);
             }
         }
         public int Moves
@@ -24,7 +24,7 @@ namespace Zork.Common
             set
             {
                 _moves = value;
-                movesChanged.Invoke(this, _moves);
+                //movesChanged.Invoke(this, _moves);
             }
         }
 
@@ -36,7 +36,7 @@ namespace Zork.Common
                 if(_currentRoom != value)
                 {
                     _currentRoom = value;
-                    locationChanged?.Invoke(this, _currentRoom);
+                    //locationChanged?.Invoke(this, _currentRoom);
                 }
             }
         }

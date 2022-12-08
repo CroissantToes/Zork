@@ -23,6 +23,12 @@
         Score,
         Reward,
         R = Reward,
-        Unknown
+        Unknown,
+        Order,
+        Search,
+        Talk,
+        Add,
+        Remove,
+        Purchase,
     }
 }
